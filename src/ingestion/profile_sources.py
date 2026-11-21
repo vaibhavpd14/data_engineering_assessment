@@ -6,12 +6,16 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 DATA_DIR = BASE_DIR / "data" / "raw"
 
-# these are tha files exist in raw
-FILES = [
-    "IND.xlsx",
-    "USA.xlsx",
-    "AUS.xlsx"
-]
+# these will check files exist in raw
+def discover_files():
+
+    files = list(DATA_DIR.glob("*.xlsx"))
+
+    if not files:
+        print("No Excel files found in the raw directory.")
+        return []
+
+    return files
 
 
 def profile_file(file_name):
@@ -56,9 +60,16 @@ def profile_file(file_name):
 
 def main():
     # itereting through all files 
-    for file_name in FILES:
+    files = discover_files()
 
-        profile_file(file_name)
+    if not files:
+        return "no files to execute"
+
+    print(f"\nTotal Excel Files Found: {len(files)}")
+
+    for file_path in files:
+
+        profile_file(file_path)
 
 
 if __name__ == "__main__":
